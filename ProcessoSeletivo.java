@@ -72,13 +72,18 @@ public class ProcessoSeletivo {
         System.out.println("Imprimindo com a ordem de seleção pelo índice");
 
         // ... DIGITE SUA SOLUCAÇÃO AQUI ...
+        for (int i = 0; i < candidatosSelecionados.length; i++) {
+            System.out.println(i + " - " + candidatosSelecionados[i]);
+        }
 
         //forma abrevida
         //interação total sem precisar da posição ou indice
         System.out.println("Imprimindo todos sem a necessidade de exibir o índice");
 
         // ... DIGITE SUA SOLUCAÇÃO AQUI ...
-
+        for (String candidato: candidatosSelecionados) {
+            System.out.println(candidato);
+        }
     }
 
     static void case4(String candidato) {
@@ -87,6 +92,14 @@ public class ProcessoSeletivo {
         boolean atendeu=false;
 
         // ... DIGITE SUA SOLUCAÇÃO AQUI ...
+        Random random = new Random();
+        while (tentativasRealizadas <= 3){
+            atendeu = random.nextBoolean();
+            if(atendeu || tentativasRealizadas == 3) {
+                break;
+            }
+            tentativasRealizadas++;
+        }
 
         if(atendeu)
             System.out.println("CONSEGUIMOS CONTATO COM " + candidato +" NA " + tentativasRealizadas + " TENTATIVA");
