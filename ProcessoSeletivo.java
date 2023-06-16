@@ -28,7 +28,16 @@ public class ProcessoSeletivo {
 
     }
     static void case1(double salarioBase, double salarioPretendido) {
-        // ... DIGITE SUA SOLUCAÇÃO AQUI ...
+        // Se o valor salário base for maior que valor salário pretentido, imprima : LIGAR PARA O CANDIDATO;
+        // Se não se o valor salário base for igual ao valor salário pretentido, imprima : LIGAR PARA O CANDIDATO, COM CONTRA PROPOSTA;
+        // Se não imprima: AGUARDANDO RESULTADO DOS DEMAIS CANDIDATOS.
+        if(salarioBase > salarioPretendido) {
+            System.out.println("LIGAR PARA O CANDIDATO");
+        } else if (salarioBase == salarioPretendido) {
+            System.out.println("LIGAR PARA O CANDIDATO, COM CONTRA PROPOSTA");
+        } else {
+            System.out.println("AGUARDANDO RESULTADO DOS DEMAIS CANDIDATOS");
+        }
     }
     static void case2() {
         double salarioBase = 2000.0;
@@ -37,7 +46,16 @@ public class ProcessoSeletivo {
         int proximoCandidato = 0;
 
         // ... DIGITE SUA SOLUCAÇÃO AQUI ...
+        for (; proximoCandidato < candidatos.length; proximoCandidato++) {
+            // System.out.println(candidatos[i]);
+            if ( valorPretendido() <= salarioBase) {
+                totalSelecionados++;
+            }
+            if (totalSelecionados == 5) {
+                break;
+            }
 
+        }
         System.out.println("Total de selecionados: " + totalSelecionados);
         System.out.println("Total de consultados: " + proximoCandidato);
     }
