@@ -29,7 +29,7 @@ public class ImpressorCupom {
         for(CupomItem item:cupom.itens){
             // conteudo.append("DESCRICAO DE ACORDO COM CADA ITEM EXISTENTE\n");
             conteudo.append(String.format("%9s %-40.40s\n",item.sku,item.descricao));
-            conteudo.append(String.format("          R$ %7s  %-8.8s %-8.8s R$ %7s\n"
+            conteudo.append(String.format("          R$ %,7.2f %-7.7s %,11.4f R$ %,7.2f\n"
                     ,  item.preco, item.und, item.quantidade, item.subtotal));
         }
         conteudo.append(tracos());
