@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Comparator;
 
 public class OrdenarUmaFrase {
     public static void main(String[] args) {
@@ -31,6 +32,14 @@ public class OrdenarUmaFrase {
         Arrays.stream("O código estava muito bem escrito.".split(" "))
                 .sorted((s1, s2) -> s1.length() - s2.length())
                 .forEach(palavra -> System.out.print(palavra + " "));
+
+        System.out.println();
+
+        //String frase = "o código estava muito bem escrito";
+        //String[] palavras = frase.split(" ");
+        Arrays.sort(palavras, Comparator.comparingInt(String::length));
+        String frase = String.join(" ", palavras);
+        System.out.println(frase);
     }
 
 }
