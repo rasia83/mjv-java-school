@@ -28,9 +28,8 @@ public class ImpressorCupom {
         conteudo.append(String.format("ITEM COD. %-30s%10s\n","DESCRIÇÃO","VALOR"));
         for(CupomItem item:cupom.itens){
             // conteudo.append("DESCRICAO DE ACORDO COM CADA ITEM EXISTENTE\n");
-            // alterações, adicionandos os campos dos itens
-            conteudo.append(String.format("%9s %-40s\n",item.sku,item.descricao));
-            conteudo.append(String.format("          R$ %7s  %-6s %-10s R$ %7s\n"
+            conteudo.append(String.format("%9s %-40.40s\n",item.sku,item.descricao));
+            conteudo.append(String.format("          R$ %7s  %-8.8s %-8.8s R$ %7s\n"
                     ,  item.preco, item.und, item.quantidade, item.subtotal));
         }
         conteudo.append(tracos());
