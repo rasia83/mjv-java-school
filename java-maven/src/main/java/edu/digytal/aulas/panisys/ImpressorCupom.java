@@ -20,7 +20,7 @@ public class ImpressorCupom {
         Endereco end = cupom.endereco;
         conteudo.append(String.format("%s Nº%s %s %s \n" , end.logradouro, end.numero, end.complemento, end.bairro ));
         conteudo.append(String.format("%-1.45s - %s \n" , end.cidade, end.uf ));
-        conteudo.append(String.format("CPF/CNPJ: %-29.29s %s \n" , cupom.cpf, cupom.data ));
+        conteudo.append(String.format("CPF/CNPJ: %-29.29s %2$td/%2$tm/%2$tY \n" , cpfCnpj(cupom.cpf), cupom.data ));
         conteudo.append(String.format("IE: %-37.37s %s \n" , cupom.ie, cupom.hora ));
         conteudo.append(String.format("IM: %-35.35s CCF:%s \n" , cupom.im, cupom.ccf ));
         conteudo.append(String.format("%39.39s CDD:%6.6s\n" ,"", cupom.cdd ));
@@ -42,12 +42,9 @@ public class ImpressorCupom {
         return repeated + "\n";
     }
     private String cpfCnpj(String cpfCnpj){
-        String newCnpj = "";
         if(cpfCnpj.length()==11)
-            newCnpj = cpfCnpj.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
-        else
-            newCnpj = cpfCnpj.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
-        return newCnpj;
+            return cpfCnpj.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+        return cpfCnpj.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
     }
 }
 
