@@ -1,5 +1,9 @@
 package edu.digytal.aulas.panisys;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class ImpressorCupom {
     public String imprimir(Cupom cupom){
         /**
@@ -29,8 +33,8 @@ public class ImpressorCupom {
         //modelo para ser replicado
         conteudo.append(String.format("ITEM COD. %-30s%10s\n","DESC.","VALOR"));
         for(CupomItem item:cupom.itens){
-            conteudo.append(String.format("%03d  %3s  %-17.17s %s%s X %s %,7.2f\n",
-                    item.ordem, item.sku,item.descricao, item.quantidade, item.und, item.preco, item.subtotal));
+            conteudo.append(String.format("%03d  %3s  %-16.16s %s%s X %s %7.7s\n",
+                    item.ordem, item.sku,item.descricao, item.quantidade, item.und, numeroPtBR(item.preco), numeroPtBR(item.subtotal)));
         }
         conteudo.append(tracos());
         System.out.println(conteudo.toString());
@@ -45,6 +49,13 @@ public class ImpressorCupom {
         if(cpfCnpj.length()==11)
             return cpfCnpj.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
         return cpfCnpj.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
+    }
+
+    private String numeroPtBR(Double numero) {
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        DecimalFormat formato = new DecimalFormat("#,##0.00", simbolos);
+
+        return formato.format(numero);
     }
 }
 
