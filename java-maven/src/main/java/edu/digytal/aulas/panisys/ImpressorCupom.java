@@ -1,7 +1,7 @@
 package edu.digytal.aulas.panisys;
 
 public class ImpressorCupom {
-    public void imprimir(Cupom cupom){
+    public String imprimir(Cupom cupom){
         /**
          vamos somente impimir o resultado no console
          mas este mesmo conteúdo poderá proporicionar várias saidas
@@ -13,29 +13,29 @@ public class ImpressorCupom {
         CONSIDERE O COMPRIMENTO MÁXIMO DE 50 CARACTERES EM CADA LINHA
         E APLIQUE O RESPECTIVO ALINHAMENTO
          */
+        System.out.println();
         StringBuilder conteudo = new StringBuilder();
         conteudo.append(tracos());
-        conteudo.append(cupom.nomeFantasia + "\n"); //preencher com espaços até ter 50 caracteres de comprimento
+        conteudo.append(String.format("%-50.50s \n" ,cupom.nomeFantasia));
         Endereco end = cupom.endereco;
-        conteudo.append(end.logradouro + " N. " + end.numero + " " + end.complemento + " " + end.bairro + " " + end.cidade + "-" + end.uf + "\n"); //como formatar vários campos
-        conteudo.append("CPF/CNPJ:" + cupom.cpf + " " + cupom.data + "\n");//calcular os respectivos comprimentos e aplicar alinhamento
-        conteudo.append("IE:" + cupom.ie + " " + cupom.hora + "\n");//calcular os respectivos comprimentos e aplicar alinhamento
-        conteudo.append("IM:" + cupom.im + " " +  "CCF:" + cupom.ccf + "\n");//calcular os respectivos comprimentos e aplicar alinhamento
-        conteudo.append("CDD:" + cupom.cdd + "\n");//aplicar alinhamento à direita
+        conteudo.append(String.format("%s Nº%s %s %s \n" , end.logradouro, end.numero, end.complemento, end.bairro ));
+        conteudo.append(String.format("%-1.45s - %s \n" , end.cidade, end.uf ));
+        conteudo.append(String.format("CPF/CNPJ: %-29.29s %s \n" , cupom.cpf, cupom.data ));
+        conteudo.append(String.format("IE: %-37.37s %s \n" , cupom.ie, cupom.hora ));
+        conteudo.append(String.format("IM: %-35.35s CCF:%s \n" , cupom.im, cupom.ccf ));
+        conteudo.append(String.format("%39.39s CDD:%6.6s\n" ,"", cupom.cdd ));
         conteudo.append(tracos());
         conteudo.append("CUPOM FISCAL\n");
         //modelo para ser replicado
-        conteudo.append(String.format("ITEM COD. %-30s%10s\n","DESCRIÇÃO","VALOR"));
+        conteudo.append(String.format("ITEM COD. %-30s%10s\n","DESC.","VALOR"));
         for(CupomItem item:cupom.itens){
-            // conteudo.append("DESCRICAO DE ACORDO COM CADA ITEM EXISTENTE\n");
-            conteudo.append(String.format("%9s %-40.40s\n",item.sku,item.descricao));
-            conteudo.append(String.format("          R$ %,7.2f %-7.7s %,11.4f R$ %,7.2f\n"
-                    ,  item.preco, item.und, item.quantidade, item.subtotal));
+            conteudo.append(String.format("%03d  %3s  %-17.17s %s%s X %s %,7.2f\n",
+                    item.ordem, item.sku,item.descricao, item.quantidade, item.und, item.preco, item.subtotal));
         }
         conteudo.append(tracos());
         System.out.println(conteudo.toString());
         //em caso de resolver explorar algumas formas de apresentação
-        //return conteudo.toString();
+        return conteudo.toString();
     }
     private String tracos(){
         String repeated = new String(new char[50]).replace("\0", "-");
