@@ -1,13 +1,10 @@
 package edu.digytal.aulas.conexao.professores.jdbc;
 
-import edu.digytal.aulas.conexao.professores.jdbc.FabricaConexao;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,38 +22,41 @@ public class ProfessorCrud {
         try {
             // String sql = "INSERT INTO professores (nome) VALUES (?)";
             String sql = """
-                INSERT INTO professores
-                (nome,
-                data_nascimento,
-               
-                valor_hora,
-                fl_estrangeiro,
-                horas_disponiveis,
-                biografia,
-                data_hora_cadastro)
-                VALUES
-                (?, ?, ?, ?, ?, ?, ? )                    
+                    INSERT INTO professores
+                    (nome,
+                    data_nascimento,
+                    valor_hora,
+                    fl_estrangeiro,
+                    horas_disponiveis,
+                    biografia,
+                    data_hora_cadastro,
+                    carga_horaria)
+                    VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ? )                    
                     """;
-// carga_horaria,
-            PreparedStatement statement = conexao.prepareStatement(sql);
+
+            PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, professor.nome);
             statement.setString(2, professor.dataNascimento.toString());
-            //statement.setString(3, professor.cargaHoraria != null?professor.cargaHoraria.toString(): "");
             statement.setString(3, professor.valorHora.toString());
             statement.setString(4, professor.flEstrangeiro.booleanValue()?"1":"0" );
             statement.setString(5, professor.horasDisponiveis.toString());
             statement.setString(6, professor.biografia);
             statement.setString(7, professor.dataHoraCadastro.toString());
-
+            long hours = professor.cargaHoraria.toHours();
+            long minutes = professor.cargaHoraria.toMinutes() % 60;
+            long seconds = professor.cargaHoraria.toSeconds() % 60 % 60;
+            statement.setString(8, String.format("%02d:%02d:%02d",hours, minutes, seconds));
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Um novo professor foi salvo com sucesso!");
-                /*
+
                 ResultSet generatedKeys = statement.getGeneratedKeys();
                 if (generatedKeys.next()) {
+                    System.out.println(generatedKeys.getInt(1));
                     return generatedKeys.getInt(1);
-                }*/
+                }
             }
 
         }catch (Exception ex){
@@ -67,11 +67,34 @@ public class ProfessorCrud {
 
     public void update(Professor professor){
         try {
-            String sql = "UPDATE professores SET nome = ? WHERE codigo = ?";
+            String sql = """
+                    UPDATE professores SET
+                    nome = ? ,
+                    data_nascimento = ? ,
+                    valor_hora = ? ,
+                    fl_estrangeiro = ? ,
+                    horas_disponiveis = ? ,
+                    biografia = ? ,
+                    data_hora_cadastro = ? ,
+                    carga_horaria = ? 
+                    WHERE id = ?                   
+                    """;
 
             PreparedStatement statement = conexao.prepareStatement(sql);
             statement.setString(1, professor.nome);
-            statement.setInt(2, professor.id);
+            statement.setString(2, professor.dataNascimento.toString());
+            statement.setString(3, professor.valorHora.toString());
+            statement.setString(4, professor.flEstrangeiro.booleanValue()?"1":"0" );
+            statement.setString(5, professor.horasDisponiveis.toString());
+            statement.setString(6, professor.biografia);
+            statement.setString(7, professor.dataHoraCadastro.toString());
+            long hours = professor.cargaHoraria.toHours();
+            long minutes = professor.cargaHoraria.toMinutes() % 60;
+            long seconds = professor.cargaHoraria.toSeconds() % 60 % 60;
+            statement.setString(8, String.format("%02d:%02d:%02d",hours, minutes, seconds));
+
+            statement.setInt(9, professor.id);
+
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("professor alterado com sucesso!");
@@ -111,7 +134,15 @@ public class ProfessorCrud {
                 professor.id = result.getInt("id");
                 professor.nome = result.getString("nome");
                 professor.dataNascimento = result.getDate("data_nascimento").toLocalDate();
-                // professor.cargaHoraria = LocalTime.parse(result.getTime("carga_horaria").toString());
+                //professor.cargaHoraria = result.getString("carga_horaria");
+                //professor.cargaHoraria = result.getString("carga_horaria") != null ? result.getString("carga_horaria") : "";
+                String stringTTime = result.getString("carga_horaria") != null ? result.getString("carga_horaria") : "00:00:00";
+                Duration total = Duration.ZERO;
+                String[] partes = stringTTime.split(":");
+                professor.cargaHoraria = total.plusHours(Long.parseLong(partes[0]))
+                        .plusMinutes(Long.parseLong(partes[1]))
+                        .plusSeconds(Long.parseLong(partes[2]));
+
                 professor.valorHora = result.getDouble("valor_hora");
                 professor.flEstrangeiro = result.getBoolean("fl_estrangeiro");
                 professor.horasDisponiveis = result.getInt("horas_disponiveis");
@@ -135,7 +166,15 @@ public class ProfessorCrud {
                 professor.id = result.getInt("id");
                 professor.nome = result.getString("nome");
                 professor.dataNascimento = result.getDate("data_nascimento").toLocalDate();
-                // professor.cargaHoraria = LocalTime.parse(result.getTime("carga_horaria").toString());
+                //professor.cargaHoraria = result.getString("carga_horaria");
+                //professor.cargaHoraria = result.getString("carga_horaria") != null ? result.getString("carga_horaria") : "";
+                String stringTime = result.getString("carga_horaria") != null ? result.getString("carga_horaria") : "0:0:0";
+                Duration total = Duration.ZERO;
+                String[] partes = stringTime.split(":");
+                professor.cargaHoraria = total.plusHours(Long.parseLong(partes[0]))
+                                            .plusMinutes(Long.parseLong(partes[1]))
+                                            .plusSeconds(Long.parseLong(partes[2]));
+
                 professor.valorHora = result.getDouble("valor_hora");
                 professor.flEstrangeiro = result.getBoolean("fl_estrangeiro");
                 professor.horasDisponiveis = result.getInt("horas_disponiveis");
