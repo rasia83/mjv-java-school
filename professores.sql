@@ -1,18 +1,22 @@
--- CREATE DATABASE IF NOT EXISTS school CHARACTER SET utf8 COLLATE utf8_general_ci;
--- USE school;
+-- CREATE DATABASE IF NOT EXISTS schoolsis CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE schoolsis;
 
 CREATE TABLE professores (
   id int NOT NULL AUTO_INCREMENT,
   nome varchar(100) NOT NULL,
   data_nascimento date,
   carga_horaria time,
-  valor_hora double,
+  valor_hora numeric(7,2),
   estrangeiro tinyint,
   horas_disponiveis int,
   biografia text,
   data_hora_cadastro datetime,
   PRIMARY KEY (id)
 ) ;
+
+ALTER TABLE professores
+CHANGE COLUMN estrangeiro fl_estrangeiro TINYINT;
+
 
 -- usando MySQL
 -- carga_horaria estava como date na modelagem, descobrir como o campo sera usado, salvas as horas semanais ou mensais do professor ?
