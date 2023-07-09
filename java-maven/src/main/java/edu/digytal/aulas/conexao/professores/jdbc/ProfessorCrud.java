@@ -1,9 +1,6 @@
 package edu.digytal.aulas.conexao.professores.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +34,12 @@ public class ProfessorCrud {
 
             PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, professor.nome);
-            statement.setString(2, professor.dataNascimento.toString());
-            statement.setString(3, professor.valorHora.toString());
+            statement.setDate(2, Date.valueOf(professor.dataNascimento));
+            statement.setDouble(3, professor.valorHora);
             statement.setString(4, professor.flEstrangeiro.booleanValue()?"1":"0" );
-            statement.setString(5, professor.horasDisponiveis.toString());
+            statement.setInt(5, professor.horasDisponiveis);
             statement.setString(6, professor.biografia);
-            statement.setString(7, professor.dataHoraCadastro.toString());
+            statement.setTimestamp(7, Timestamp.valueOf(professor.dataHoraCadastro));
             long hours = professor.cargaHoraria.toHours();
             long minutes = professor.cargaHoraria.toMinutes() % 60;
             long seconds = professor.cargaHoraria.toSeconds() % 60 % 60;
@@ -82,12 +79,12 @@ public class ProfessorCrud {
 
             PreparedStatement statement = conexao.prepareStatement(sql);
             statement.setString(1, professor.nome);
-            statement.setString(2, professor.dataNascimento.toString());
-            statement.setString(3, professor.valorHora.toString());
+            statement.setDate(2, Date.valueOf(professor.dataNascimento));
+            statement.setDouble(3, professor.valorHora);
             statement.setString(4, professor.flEstrangeiro.booleanValue()?"1":"0" );
-            statement.setString(5, professor.horasDisponiveis.toString());
+            statement.setInt(5, professor.horasDisponiveis);
             statement.setString(6, professor.biografia);
-            statement.setString(7, professor.dataHoraCadastro.toString());
+            statement.setTimestamp(7, Timestamp.valueOf(professor.dataHoraCadastro));
             long hours = professor.cargaHoraria.toHours();
             long minutes = professor.cargaHoraria.toMinutes() % 60;
             long seconds = professor.cargaHoraria.toSeconds() % 60 % 60;
